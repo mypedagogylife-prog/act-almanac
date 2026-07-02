@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACT Almanac — Participation Dashboard</title>
+<style>
+  :root{--ink:#231d18;--ink-soft:#5a5046;--ox:#8a2a2a;--gold:#b08534;--line:#d8cdb8;--green:#3f6b4f;--card:#fbf7ee;--paper:#f4eee1}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:Georgia,serif;padding:40px 24px;min-height:100vh}
+  .wrap{max-width:960px;margin:0 auto}
+  h1{font-size:30px;margin-bottom:4px}
+  .sub{color:var(--ink-soft);font-style:italic;margin-bottom:28px}
+  #login{max-width:380px;margin:80px auto;text-align:center}
+  #login input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;font-size:16px;margin:14px 0}
+  #login button, .refresh{background:var(--ox);color:#fff;border:none;padding:11px 20px;border-radius:8px;cursor:pointer;font-size:14px}
+  #login button:hover, .refresh:hover{background:#6e1f1f}
+  #err{color:var(--ox);font-size:14px;min-height:20px}
+  #dash{display:none}
+  .summary{display:flex;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 22px;min-width:150px}
+  .stat b{display:block;font-size:26px;color:var(--ox)}
+  .stat span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th{background:var(--ink);color:#f0e7d5;text-align:left;padding:10px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:15px}
+  tr:last-child td{border-bottom:none}
+  .bar{background:#e5dcc8;border-radius:5px;height:8px;width:140px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}
+  .bar>i{display:block;height:100%;background:var(--green)}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="login">
+    <h1>ACT Almanac</h1>
+    <div class="sub">Participation Dashboard</div>
+    <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')load()">
+    <button onclick="load()">View Dashboard</button>
+    <div id="err"></div>
+  </div>
+
+  <div id="dash">
+    <div class="topbar">
+      <div>
+        <h1>Participation Dashboard</h1>
+        <div class="sub">The ACT Almanac — live from Supabase</div>
+      </div>
+      <button class="refresh" onclick="load()">Refresh</button>
+    </div>
+    <div class="summary" id="summary"></div>
+    <table>
+      <thead><tr><th>Student</th><th>Sessions Completed</th><th>Progress</th><th>Last Active</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+const TOTAL_SESSIONS = 20; // update if your course has a different session count
+let savedPw = "";
+
+async function load(){
+  const pw = document.getElementById("pw") ? document.getElementById("pw").value : savedPw;
+  document.getElementById("err").textContent = "";
+  try{
+    const r = await fetch("/api/stats", { headers: { "X-Admin-Password": pw } });
+    if(r.status === 401){ document.getElementById("err").textContent = "Incorrect password."; return; }
+    if(!r.ok){ document.getElementById("err").textContent = "Error loading data."; return; }
+    const rows = await r.json();
+    savedPw = pw;
+    render(rows);
+  }catch(e){
+    document.getElementById("err").textContent = "Couldn't reach the dashboard API.";
+  }
+}
+
+function render(rows){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("dash").style.display = "block";
+
+  const byStudent = {};
+  rows.forEach(r=>{
+    if(!byStudent[r.student_name]) byStudent[r.student_name] = { sessions: new Set(), last: r.completed_at };
+    byStudent[r.student_name].sessions.add(r.session_id);
+    if(new Date(r.completed_at) > new Date(byStudent[r.student_name].last)) byStudent[r.student_name].last = r.completed_at;
+  });
+
+  const names = Object.keys(byStudent).sort((a,b)=> byStudent[b].sessions.size - byStudent[a].sessions.size);
+  const totalStudents = names.length;
+  const avgPct = totalStudents ? Math.round(names.reduce((sum,n)=> sum + byStudent[n].sessions.size, 0) / totalStudents / TOTAL_SESSIONS * 100) : 0;
+  const completedCourse = names.filter(n=> byStudent[n].sessions.size >= TOTAL_SESSIONS).length;
+
+  document.getElementById("summary").innerHTML = `
+    <div class="stat"><b>${totalStudents}</b><span>Students Active</span></div>
+    <div class="stat"><b>${avgPct}%</b><span>Avg. Completion</span></div>
+    <div class="stat"><b>${completedCourse}</b><span>Finished All ${TOTAL_SESSIONS}</span></div>
+  `;
+
+  document.getElementById("rows").innerHTML = names.map(n=>{
+    const done = byStudent[n].sessions.size;
+    const pct = Math.min(100, Math.round(done/TOTAL_SESSIONS*100));
+    const last = new Date(byStudent[n].last).toLocaleString();
+    return `<tr>
+      <td>${escapeHtml(n)}</td>
+      <td>${done} / ${TOTAL_SESSIONS}</td>
+      <td><span class="bar"><i style="width:${pct}%"></i></span>${pct}%</td>
+      <td>${last}</td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="4" style="text-align:center;color:var(--ink-soft)">No activity logged yet.</td></tr>`;
+}
+
+function escapeHtml(s){
+  const d = document.createElement("div"); d.textContent = s; return d.innerHTML;
+}
+</script>
+</body>
+</html>

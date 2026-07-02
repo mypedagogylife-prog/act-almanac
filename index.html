@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The ACT Almanac — A 20-Session Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Newsreader:ital,opsz@0,6..72;1,6..72&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3 ecdf; --paper:#f4eee1; --ink:#231d18; --ink-soft:#5a5046;
+    --ox:#8a2a2a; --ox-deep:#6e1f1f; --gold:#b08534; --line:#d8cdb8;
+    --green:#3f6b4f; --card:#fbf7ee; --shadow:rgba(60,40,20,.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;
+    font-size:19px;line-height:1.65;
+    background-image:radial-gradient(circle at 12% 18%, rgba(176,133,52,.05), transparent 40%),
+      radial-gradient(circle at 88% 82%, rgba(138,42,42,.05), transparent 42%);
+    min-height:100vh}
+  .wrap{display:grid;grid-template-columns:300px 1fr;max-width:1280px;margin:0 auto;min-height:100vh}
+
+  /* ---- sidebar ---- */
+  aside{background:var(--ink);color:#efe7d7;padding:30px 22px 60px;position:sticky;top:0;height:100vh;overflow-y:auto;
+    border-right:3px double var(--gold)}
+  .brand{font-family:"Fraunces";font-weight:900;font-size:27px;line-height:1.05;letter-spacing:-.01em;color:#fff}
+  .brand .ac{color:var(--gold)}
+  .tag{font-style:italic;color:#bcae93;font-size:15px;margin-top:6px;margin-bottom:22px}
+  .prog{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#bcae93;margin-bottom:6px}
+  .bar{height:7px;background:#3a322a;border-radius:4px;overflow:hidden;margin-bottom:26px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#d8b25e);width:0;transition:width .5s}
+  nav h4{font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+    margin:18px 0 7px;border-bottom:1px solid #3a322a;padding-bottom:5px}
+  .navitem{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:16.5px;
+    color:#e3d9c6;transition:background .15s}
+  .navitem:hover{background:#332b23}
+  .navitem.active{background:var(--ox);color:#fff}
+  .navitem .num{font-family:"IBM Plex Mono";font-size:11px;width:22px;color:#9a8c70;flex:none}
+  .navitem.active .num{color:#f0d9a0}
+  .navitem .dot{margin-left:auto;width:8px;height:8px;border-radius:50%;border:1.5px solid #6a5c46;flex:none}
+  .navitem .dot.done{background:var(--gold);border-color:var(--gold)}
+
+  /* ---- main ---- */
+  main{padding:46px 56px 90px;max-width:860px}
+  .kick{font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ox)}
+  h1{font-family:"Fraunces";font-weight:900;font-size:46px;line-height:1.02;letter-spacing:-.02em;margin:8px 0 6px}
+  .meta{color:var(--ink-soft);font-style:italic;margin-bottom:30px;border-bottom:2px solid var(--line);padding-bottom:18px}
+  .meta b{font-style:normal;color:var(--ink)}
+  h2.block{font-family:"Fraunces";font-weight:600;font-size:25px;margin:34px 0 12px;color:var(--ox-deep);
+    display:flex;align-items:center;gap:11px}
+  h2.block::before{content:"";width:26px;height:3px;background:var(--gold)}
+  .lesson p{margin:0 0 14px}
+  .lesson ul{margin:0 0 16px 6px;padding-left:20px}
+  .lesson li{margin-bottom:7px}
+  .lesson em{color:var(--ox-deep)}
+  .callout{background:var(--card);border-left:4px solid var(--gold);padding:14px 18px;margin:18px 0;
+    font-style:italic;box-shadow:0 2px 10px var(--shadow);border-radius:0 8px 8px 0}
+  .lessontable{width:100%;border-collapse:collapse;margin:14px 0 18px;font-size:16.5px}
+  .lessontable th{background:var(--ink);color:#f0e7d5;font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;padding:8px 12px;text-align:left}
+  .lessontable td{padding:8px 12px;border-bottom:1px solid var(--line)}
+  .lessontable tr:nth-child(even) td{background:rgba(255,255,255,.4)}
+
+  .objbox{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:8px;
+    box-shadow:0 2px 12px var(--shadow)}
+  .objbox ul{margin:8px 0 0 4px;padding-left:20px}
+  .ex{background:linear-gradient(180deg,#fbf6ec,#f6efe0);border:1px dashed var(--gold);border-radius:10px;padding:18px 22px;margin:8px 0}
+  .ex .q{font-weight:600}
+  .ex .w{margin-top:8px;color:var(--ink-soft)}
+
+  /* ---- quiz ---- */
+  .quiz{margin-top:10px}
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px;
+    box-shadow:0 3px 14px var(--shadow)}
+  .qcard .qp{font-weight:600;margin-bottom:14px}
+  .qcard .qp .qn{font-family:"IBM Plex Mono";font-size:13px;color:var(--ox);margin-right:8px}
+  .choice{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border:1.5px solid var(--line);border-radius:8px;
+    margin-bottom:9px;cursor:pointer;background:#fff;transition:.15s;font-size:17px}
+  .choice:hover{border-color:var(--gold);background:#fffdf7}
+  .choice .ltr{font-family:"IBM Plex Mono";font-weight:500;color:var(--ox);flex:none}
+  .choice.correct{background:#eef6ef;border-color:var(--green)}
+  .choice.wrong{background:#fbeeee;border-color:var(--ox)}
+  .choice.locked{cursor:default;pointer-events:none;opacity:.92}
+  .explain{margin-top:6px;font-size:16px;font-style:italic;color:var(--ink-soft);padding:10px 14px;
+    border-left:3px solid var(--green);background:rgba(63,107,79,.06);border-radius:0 6px 6px 0;display:none}
+  .explain.show{display:block}
+  .scorebar{display:flex;align-items:center;gap:14px;margin:14px 0 30px;padding:14px 20px;background:var(--ink);color:#f0e7d5;
+    border-radius:10px;font-family:"IBM Plex Mono";font-size:14px;letter-spacing:.04em}
+  .scorebar b{color:var(--gold);font-size:20px}
+  .navbtns{display:flex;justify-content:space-between;margin-top:36px;gap:14px}
+  button.nav{font-family:"IBM Plex Mono";font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--ink);color:#f0e7d5;border:none;padding:13px 22px;border-radius:8px;cursor:pointer;transition:.15s}
+  button.nav:hover{background:var(--ox)}
+  button.nav:disabled{opacity:.35;cursor:not-allowed}
+  button.markdone{background:var(--green)}
+  button.markdone:hover{background:#2f5240}
+
+  /* ---- tutor ---- */
+  #tutorToggle{position:fixed;right:26px;bottom:26px;z-index:40;background:var(--ox);color:#fff;border:none;
+    border-radius:50px;padding:15px 22px;font-family:"IBM Plex Mono";font-size:13px;letter-spacing:.08em;cursor:pointer;
+    box-shadow:0 6px 22px rgba(110,31,31,.4);transition:.2s}
+  #tutorToggle:hover{background:var(--ox-deep);transform:translateY(-2px)}
+  #tutor{position:fixed;right:26px;bottom:90px;width:380px;max-width:calc(100vw - 40px);height:520px;max-height:72vh;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 50px rgba(60,40,20,.32);
+    z-index:41;display:none;flex-direction:column;overflow:hidden}
+  #tutor.open{display:flex}
+  .thead{background:var(--ink);color:#f0e7d5;padding:14px 18px;font-family:"Fraunces";font-weight:600;font-size:18px;
+    display:flex;justify-content:space-between;align-items:center}
+  .thead .x{cursor:pointer;color:#bcae93;font-size:22px;line-height:1}
+  .tbody{flex:1;overflow-y:auto;padding:16px;font-size:16px;display:flex;flex-direction:column;gap:12px}
+  .msg{padding:10px 14px;border-radius:12px;max-width:88%;line-height:1.5}
+  .msg.ai{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:3px}
+  .msg.me{background:var(--ox);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+  .msg.note{background:transparent;border:1px dashed var(--gold);font-style:italic;font-size:14px;color:var(--ink-soft);align-self:stretch;max-width:100%}
+  .tfoot{border-top:1px solid var(--line);padding:12px;display:flex;gap:8px}
+  .tfoot input{flex:1;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font-family:"Newsreader";font-size:16px;background:#fff}
+  .tfoot input:focus{outline:none;border-color:var(--gold)}
+  .tfoot button{background:var(--ox);color:#fff;border:none;border-radius:8px;padding:0 16px;cursor:pointer;font-family:"IBM Plex Mono";font-size:13px}
+  .quickrow{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px}
+  .quickrow button{background:transparent;border:1px solid var(--line);color:var(--ox);border-radius:20px;
+    padding:5px 11px;font-size:12.5px;font-family:"IBM Plex Mono";cursor:pointer}
+  .quickrow button:hover{background:#fffdf7;border-color:var(--gold)}
+
+  @media(max-width:880px){
+    .wrap{grid-template-columns:1fr}
+    aside{position:relative;height:auto;border-right:none;border-bottom:3px double var(--gold)}
+    main{padding:32px 22px 80px}
+    h1{font-size:34px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <div class="brand">The ACT <span class="ac">Almanac</span></div>
+    <div class="tag">A self-paced course in twenty sessions</div>
+    <div class="prog">Progress · <span id="progTxt">0 of 20</span></div>
+    <div class="bar"><i id="progBar"></i></div>
+    <nav id="nav"></nav>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<button id="tutorToggle">✦ Ask the Tutor</button>
+<div id="tutor">
+  <div class="thead">AI Tutor <span class="x" id="tutorClose">×</span></div>
+  <div class="tbody" id="tbody"></div>
+  <div class="quickrow" id="quickrow"></div>
+  <div class="tfoot">
+    <input id="tinput" placeholder="Ask about this session…" autocomplete="off">
+    <button id="tsend">Send</button>
+  </div>
+</div>
+
+<script>
+/* ===== COURSE DATA (inlined so this file works standalone) ===== */
+/* ============================================================
+   ACT PREP — 20-SESSION COURSE CONTENT
+   Edit this file to change lessons or add/replace questions.
+   Each session: { id, section, title, minutes, objectives[],
+                   lesson (HTML string), example {q, work},
+                   questions[ {prompt, choices[], answer (index), why } ] }
+   ============================================================ */
+const COURSE = [
+  {
+    id: 1, section: "Orientation", title: "Meet the ACT", minutes: 35,
+    objectives: [
+      "Know the four required sections, their order, timing, and question counts.",
+      "Understand that the ACT rewards pace and pattern-recognition, not trick knowledge.",
+      "Set a target score and a realistic per-question time budget."
+    ],
+    lesson: `<p>The ACT is a <strong>timed, multiple-choice</strong> exam with four scored sections plus an optional essay. You see them in this order:</p>
+      <table class="lessontable"><thead><tr><th>Section</th><th>Questions</th><th>Time</th><th>≈ per Q</th></tr></thead>
+      <tbody>
+      <tr><td>English</td><td>75</td><td>45 min</td><td>36 sec</td></tr>
+      <tr><td>Math</td><td>60</td><td>60 min</td><td>60 sec</td></tr>
+      <tr><td>Reading</td><td>40</td><td>35 min</td><td>52 sec</td></tr>
+      <tr><td>Science</td><td>40</td><td>35 min</td><td>52 sec</td></tr>
+      <tr><td>Writing (optional)</td><td>1 essay</td><td>40 min</td><td>—</td></tr>
+      </tbody></table>
+      <p>Each section is scored 1–36; your <strong>Composite</strong> is the average of the four, rounded. The single most common mistake is running out of time — so from day one we train pace alongside content.</p>
+      <p class="callout">Golden rule: never leave a blank. There is no penalty for wrong answers, so a guess is always better than an empty bubble.</p>`,
+    example: { q: "If you have 45 minutes for 75 English questions, roughly how long can you spend on each?",
+      work: "45 min × 60 = 2700 seconds. 2700 ÷ 75 = 36 seconds per question. That's your ceiling — easy items should take far less, banking time for harder ones." },
+    questions: [
+      { prompt: "Which ACT section comes first on test day?", choices: ["Math", "English", "Reading", "Science"], answer: 1,
+        why: "The ACT always begins with the 45-minute English section." },
+      { prompt: "How is the ACT Composite score calculated?", choices: ["Sum of all four sections", "The single highest section", "The average of the four sections, rounded", "English + Math only"], answer: 2,
+        why: "The Composite is the average of the four section scores (1–36 each), rounded to the nearest whole number." },
+      { prompt: "You're unsure of an answer with 30 seconds left. Best move?", choices: ["Leave it blank to be safe", "Guess — no penalty for wrong answers", "Skip the rest of the section", "Change all previous answers"], answer: 1,
+        why: "The ACT has no wrong-answer penalty, so always fill in a guess rather than leaving a blank." }
+    ]
+  },
+  {
+    id: 2, section: "English", title: "Sentence Structure & Boundaries", minutes: 40,
+    objectives: ["Identify independent vs. dependent clauses.", "Fix run-ons, comma splices, and fragments.", "Recognize the four legal ways to join two independent clauses."],
+    lesson: `<p>Most ACT English questions are really about <strong>where sentences begin and end</strong>. An <em>independent clause</em> can stand alone; a <em>dependent clause</em> cannot.</p>
+      <p>Two independent clauses may be joined only four ways:</p>
+      <ul>
+        <li>Period: <em>She ran. He walked.</em></li>
+        <li>Semicolon: <em>She ran; he walked.</em></li>
+        <li>Comma + FANBOYS conjunction: <em>She ran, but he walked.</em></li>
+        <li>Subordinator turning one clause dependent: <em>While she ran, he walked.</em></li>
+      </ul>
+      <p>A <strong>comma splice</strong> (two independent clauses joined by only a comma) is wrong. A <strong>run-on</strong> joins them with nothing. A <strong>fragment</strong> is missing a subject or verb.</p>
+      <p class="callout">Trick: if a clause can be a sentence on its own, treat its boundary with a period-strength stop (period or semicolon), not a bare comma.</p>`,
+    example: { q: "Fix: \"The lab closed early, the experiment was incomplete.\"",
+      work: "Two independent clauses joined by only a comma = comma splice. Fix with a semicolon, a period, or add a conjunction: \"The lab closed early, so the experiment was incomplete.\"" },
+    questions: [
+      { prompt: "Which is a complete, correct sentence?", choices: ["Because the rain stopped suddenly.", "The rain stopped, we went outside.", "The rain stopped, so we went outside.", "The rain stopped we went outside."], answer: 2,
+        why: "Option C joins two independent clauses with a comma + FANBOYS conjunction (so). A is a fragment, B is a comma splice, D is a run-on." },
+      { prompt: "\"Maria studied all night; she still felt unprepared.\" The semicolon here is:", choices: ["Incorrect — needs a comma", "Correct — joins two independent clauses", "Incorrect — needs a colon", "Correct only because of 'still'"], answer: 1,
+        why: "A semicolon correctly joins two independent clauses that are closely related." },
+      { prompt: "Identify the fragment:", choices: ["The dog barked.", "Running through the empty field at dawn.", "She left, and he stayed.", "It rained."], answer: 1,
+        why: "\"Running through the empty field at dawn\" has no subject performing a main verb — it's a fragment." }
+    ]
+  },
+  {
+    id: 3, section: "English", title: "Commas, Semicolons & Colons", minutes: 40,
+    objectives: ["Use commas for nonessential information, lists, and introductions.", "Distinguish semicolon vs. colon use.", "Avoid unnecessary commas."],
+    lesson: `<p>The ACT tests punctuation constantly. Key uses:</p>
+      <ul>
+        <li><strong>Commas</strong>: separate items in a list; set off nonessential clauses (<em>My brother, who lives in Texas, called</em>); follow introductory phrases.</li>
+        <li><strong>Semicolons</strong>: join two independent clauses, or separate list items that already contain commas.</li>
+        <li><strong>Colons</strong>: introduce a list, explanation, or quotation — but only after a complete sentence.</li>
+      </ul>
+      <p>The most common ACT punctuation error is the <strong>unnecessary comma</strong>. When in doubt, leave it out: never separate a subject from its verb, and don't put a comma before a list that follows a verb.</p>
+      <p class="callout">Test for nonessential info: if you can remove the phrase and the sentence still makes sense and keeps its meaning, it needs commas around it.</p>`,
+    example: { q: "Punctuate: \"She packed three things a tent a map and water.\"",
+      work: "A complete sentence precedes the list, so use a colon, then commas between items: \"She packed three things: a tent, a map, and water.\"" },
+    questions: [
+      { prompt: "Choose the correctly punctuated sentence:", choices: ["My favorite subjects are: math, science, and art.", "My favorite subjects are math, science, and art.", "My favorite subjects, are math, science and art.", "My favorite subjects are math science and art."], answer: 1,
+        why: "No colon is needed after 'are' (not a complete sentence yet), and the list items are separated by commas." },
+      { prompt: "Which sentence uses the colon correctly?", choices: ["The recipe needs: eggs, flour, and sugar.", "I brought my: notebook and pen.", "There is one rule: never give up.", "She wants to: travel and write."], answer: 2,
+        why: "A colon must follow a complete sentence. \"There is one rule\" is complete; the others are not." },
+      { prompt: "\"The hikers, exhausted and hungry, reached camp.\" The commas are:", choices: ["Wrong — separate subject and verb", "Correct — set off a nonessential descriptive phrase", "Wrong — should be semicolons", "Correct — they form a list"], answer: 1,
+        why: "\"exhausted and hungry\" is nonessential description correctly set off by commas." }
+    ]
+  },
+  {
+    id: 4, section: "English", title: "Verbs: Tense & Agreement", minutes: 40,
+    objectives: ["Match verbs to their true subjects.", "Keep verb tense consistent and logical.", "Spot subjects hidden behind prepositional phrases."],
+    lesson: `<p><strong>Subject–verb agreement</strong>: a singular subject takes a singular verb. The ACT hides the subject behind prepositional phrases to fool you.</p>
+      <p><em>The box of nails <strong>is</strong> heavy.</em> — The subject is <em>box</em> (singular), not <em>nails</em>. Cross out the prepositional phrase "of nails" to hear it.</p>
+      <p><strong>Tense consistency</strong>: keep tense logical within a passage. Don't shift from past to present without reason. Watch for time markers ("yesterday," "by next year") that dictate tense.</p>
+      <p class="callout">Strategy: when a verb is underlined, find its subject first — then strip away every "of/in/with/by..." phrase between them.</p>`,
+    example: { q: "Choose: \"The collection of rare coins (was / were) donated.\"",
+      work: "Subject = collection (singular). 'of rare coins' is a prepositional phrase. Correct verb: was donated." },
+    questions: [
+      { prompt: "\"Each of the students ___ a laptop.\"", choices: ["have", "has", "having", "were having"], answer: 1,
+        why: "'Each' is singular, so it takes 'has.' The phrase 'of the students' doesn't change the subject." },
+      { prompt: "Which sentence has consistent verb tense?", choices: ["She opened the door and sees a cat.", "He runs to the store and bought milk.", "They studied hard and passed the test.", "I will go and went home."], answer: 2,
+        why: "Both verbs are past tense (studied, passed), keeping tense consistent." },
+      { prompt: "\"Neither the teacher nor the students ___ ready.\"", choices: ["was", "is", "were", "has been"], answer: 2,
+        why: "With 'neither...nor,' the verb agrees with the nearer subject. 'students' is plural, so 'were.'" }
+    ]
+  },
+  {
+    id: 5, section: "English", title: "Rhetorical Skills: Concision & Order", minutes: 40,
+    objectives: ["Choose the most concise correct option.", "Add, delete, or relocate sentences for logic.", "Match tone and word choice to purpose."],
+    lesson: `<p>About 40% of ACT English is <strong>rhetorical skills</strong> — not grammar, but effectiveness. Two big ideas:</p>
+      <ul>
+        <li><strong>Concision wins.</strong> If two answers are both grammatically correct, the shorter, non-redundant one is almost always right. Watch for redundancy: <em>"return back," "past history," "each and every."</em></li>
+        <li><strong>Logic & order.</strong> "Add/Delete/Should the writer..." questions test whether content fits the paragraph's purpose. Answer the <em>why</em>, not just yes/no.</li>
+      </ul>
+      <p class="callout">When you see the option "OMIT the underlined portion," take it seriously — it's correct more often than chance, because the ACT loves concision.</p>`,
+    example: { q: "Most concise: 'The reason she left was because she was tired.'",
+      work: "'The reason...was because' is redundant. Best: 'She left because she was tired.'" },
+    questions: [
+      { prompt: "Choose the most concise version:", choices: ["At this point in time, we should leave.", "We should leave now.", "We should, at the present time, leave.", "Now, at this moment, we should leave."], answer: 1,
+        why: "'We should leave now' conveys the same meaning with no padding." },
+      { prompt: "Which phrase is redundant (and should be cut)?", choices: ["bright sunlight", "completely finished", "carefully measured", "ancient ruins"], answer: 1,
+        why: "'Finished' already means complete, so 'completely finished' is redundant." },
+      { prompt: "A sentence about pizza appears in a paragraph entirely about training for a marathon. The writer should:", choices: ["Keep it for variety", "Delete it — it's irrelevant to the paragraph's focus", "Move it to the introduction", "Expand on it"], answer: 1,
+        why: "Content that doesn't serve the paragraph's purpose should be deleted." }
+    ]
+  },
+  {
+    id: 6, section: "Math", title: "Number Sense & Pre-Algebra", minutes: 45,
+    objectives: ["Work fluently with fractions, percents, and ratios.", "Apply order of operations.", "Translate word problems into expressions."],
+    lesson: `<p>Roughly a quarter of ACT Math is pre-algebra: percents, ratios, averages, and number properties.</p>
+      <ul>
+        <li><strong>Percent change</strong> = (new − old) / old × 100.</li>
+        <li><strong>Ratios</strong> compare parts; convert to fractions of the whole when needed.</li>
+        <li><strong>Average</strong> = sum ÷ count. To find a missing value, work backward from the sum.</li>
+      </ul>
+      <p>Translate carefully: "of" means multiply, "is" means equals, "percent" means /100.</p>
+      <p class="callout">Plug in real numbers when a problem is abstract. If it says "a number," try 100 for percents or a small integer otherwise.</p>`,
+    example: { q: "A $80 jacket is marked up 25%. What's the new price?",
+      work: "25% of 80 = 0.25 × 80 = 20. New price = 80 + 20 = $100." },
+    questions: [
+      { prompt: "What is 15% of 240?", choices: ["24", "36", "32", "40"], answer: 1,
+        why: "0.15 × 240 = 36." },
+      { prompt: "The average of 4 numbers is 20. Three of them are 18, 22, and 25. What is the fourth?", choices: ["15", "20", "13", "17"], answer: 0,
+        why: "Sum must be 4 × 20 = 80. 18+22+25 = 65. Fourth = 80 − 65 = 15." },
+      { prompt: "A recipe uses flour and sugar in a 3:1 ratio. If you use 12 cups of flour, how much sugar?", choices: ["4 cups", "3 cups", "6 cups", "9 cups"], answer: 0,
+        why: "3 parts flour to 1 part sugar. 12 cups ÷ 3 = 4 cups per part, so sugar = 4 cups." }
+    ]
+  },
+  {
+    id: 7, section: "Math", title: "Elementary Algebra", minutes: 45,
+    objectives: ["Solve linear equations and inequalities.", "Manipulate expressions with exponents.", "Set up equations from word problems."],
+    lesson: `<p>Solve for the variable by doing the same operation to both sides. Keep equations balanced.</p>
+      <p><strong>Exponent rules</strong>: x^a · x^b = x^(a+b); (x^a)^b = x^(ab); x^a / x^b = x^(a−b); x^0 = 1.</p>
+      <p><strong>Inequalities</strong>: when you multiply or divide by a negative, flip the inequality sign.</p>
+      <p class="callout">Backsolving: when answer choices are numbers, plug them into the equation to find which works. Often faster than solving.</p>`,
+    example: { q: "Solve 3x − 7 = 2x + 5.",
+      work: "3x − 2x = 5 + 7 → x = 12." },
+    questions: [
+      { prompt: "Solve for x: 5x + 3 = 28", choices: ["x = 5", "x = 4", "x = 6", "x = 7"], answer: 0,
+        why: "5x = 25, so x = 5." },
+      { prompt: "Simplify: x^5 · x^3", choices: ["x^8", "x^15", "x^2", "2x^8"], answer: 0,
+        why: "Multiply same-base powers by adding exponents: 5 + 3 = 8." },
+      { prompt: "Solve the inequality: −2x > 6", choices: ["x > −3", "x < −3", "x > 3", "x < 3"], answer: 1,
+        why: "Divide by −2 and flip the sign: x < −3." }
+    ]
+  },
+  {
+    id: 8, section: "Math", title: "Intermediate Algebra & Functions", minutes: 50,
+    objectives: ["Factor quadratics and use the quadratic formula.", "Evaluate and interpret functions f(x).", "Work with systems of equations."],
+    lesson: `<p><strong>Quadratics</strong>: ax² + bx + c = 0. Factor when possible; otherwise use x = [−b ± √(b²−4ac)] / 2a.</p>
+      <p><strong>Functions</strong>: f(x) is a rule. f(3) means substitute 3 for x. Composite f(g(x)) means evaluate g first, then feed the result into f.</p>
+      <p><strong>Systems</strong>: solve by substitution or elimination. The solution is where the lines/curves intersect.</p>
+      <p class="callout">For "f(x) = ..." questions, the most common error is arithmetic during substitution. Write out every step.</p>`,
+    example: { q: "If f(x) = 2x² − 3, find f(4).",
+      work: "f(4) = 2(16) − 3 = 32 − 3 = 29." },
+    questions: [
+      { prompt: "Factor: x² − 5x + 6", choices: ["(x−2)(x−3)", "(x+2)(x+3)", "(x−1)(x−6)", "(x−2)(x+3)"], answer: 0,
+        why: "Need two numbers multiplying to 6 and adding to −5: −2 and −3." },
+      { prompt: "If g(x) = 3x + 1, what is g(g(2))?", choices: ["22", "7", "21", "10"], answer: 0,
+        why: "g(2) = 7; then g(7) = 3(7)+1 = 22." },
+      { prompt: "Solve the system: y = x + 1 and y = 2x − 3", choices: ["x = 4, y = 5", "x = 2, y = 3", "x = 3, y = 4", "x = 5, y = 6"], answer: 0,
+        why: "Set equal: x+1 = 2x−3 → 4 = x. Then y = 4+1 = 5." }
+    ]
+  },
+  {
+    id: 9, section: "Math", title: "Plane Geometry", minutes: 50,
+    objectives: ["Apply angle, triangle, and circle rules.", "Use area and perimeter formulas.", "Recognize special right triangles."],
+    lesson: `<p>Memorize the core formulas — the ACT does not provide them.</p>
+      <ul>
+        <li>Triangle area = ½ · base · height. Angles sum to 180°.</li>
+        <li>Circle: area = πr², circumference = 2πr.</li>
+        <li>Pythagorean theorem: a² + b² = c² for right triangles.</li>
+        <li>Special right triangles: 3-4-5, 5-12-13; 45-45-90 (sides 1:1:√2); 30-60-90 (1:√3:2).</li>
+      </ul>
+      <p class="callout">Lines that look parallel or equal usually are — but confirm with given marks. Vertical angles are equal; angles on a straight line sum to 180°.</p>`,
+    example: { q: "A right triangle has legs 6 and 8. What is the hypotenuse?",
+      work: "6² + 8² = 36 + 64 = 100. √100 = 10." },
+    questions: [
+      { prompt: "Two angles of a triangle are 50° and 60°. The third is:", choices: ["70°", "80°", "90°", "60°"], answer: 0,
+        why: "Angles sum to 180°: 180 − 50 − 60 = 70°." },
+      { prompt: "A circle has radius 5. Its area is:", choices: ["10π", "25π", "5π", "100π"], answer: 1,
+        why: "Area = πr² = π(5²) = 25π." },
+      { prompt: "In a right triangle, one leg is 9 and the hypotenuse is 15. The other leg is:", choices: ["12", "13", "10", "11"], answer: 0,
+        why: "9-12-15 is a 3-4-5 triangle scaled by 3. Or: 15² − 9² = 225 − 81 = 144, √144 = 12." }
+    ]
+  },
+  {
+    id: 10, section: "Math", title: "Coordinate Geometry & Trig", minutes: 50,
+    objectives: ["Find slope, distance, and midpoint.", "Interpret y = mx + b.", "Apply SOH-CAH-TOA."],
+    lesson: `<p><strong>Slope</strong> = (y₂−y₁)/(x₂−x₁). In y = mx + b, m is slope and b is the y-intercept. Parallel lines share slope; perpendicular slopes are negative reciprocals.</p>
+      <p><strong>Distance</strong> = √[(x₂−x₁)² + (y₂−y₁)²]. <strong>Midpoint</strong> = ((x₁+x₂)/2, (y₁+y₂)/2).</p>
+      <p><strong>Right-triangle trig</strong>: sin = opp/hyp, cos = adj/hyp, tan = opp/adj (SOH-CAH-TOA).</p>
+      <p class="callout">Most ACT trig is just SOH-CAH-TOA on a right triangle. Identify the angle, label opposite/adjacent/hypotenuse, pick the ratio.</p>`,
+    example: { q: "Find the slope between (1, 2) and (4, 11).",
+      work: "(11 − 2)/(4 − 1) = 9/3 = 3." },
+    questions: [
+      { prompt: "What is the y-intercept of y = 3x − 7?", choices: ["3", "−7", "7", "0"], answer: 1,
+        why: "In y = mx + b, b = −7 is the y-intercept." },
+      { prompt: "The slope of a line perpendicular to y = 2x + 1 is:", choices: ["2", "−2", "1/2", "−1/2"], answer: 3,
+        why: "Perpendicular slope is the negative reciprocal of 2, which is −1/2." },
+      { prompt: "In a right triangle, the side opposite angle θ is 3 and the hypotenuse is 5. sin θ =", choices: ["3/5", "4/5", "3/4", "5/3"], answer: 0,
+        why: "sin = opposite/hypotenuse = 3/5." }
+    ]
+  },
+  {
+    id: 11, section: "Reading", title: "Reading Strategy & Pacing", minutes: 40,
+    objectives: ["Budget ~8.5 minutes per passage.", "Choose a passage approach that fits you.", "Answer from the text, not outside knowledge."],
+    lesson: `<p>Four passages, 10 questions each, 35 minutes — about <strong>8 minutes 45 seconds per passage</strong>. Three approaches; pick what works in practice:</p>
+      <ul>
+        <li><strong>Read then answer</strong>: skim for structure, then attack questions.</li>
+        <li><strong>Skim & dive</strong>: read the first paragraph and topic sentences, then go to questions.</li>
+        <li><strong>Question-first</strong>: read line-reference questions first, hunt the answer.</li>
+      </ul>
+      <p>Every answer must be <strong>supported by the text</strong>. The right answer is the one you can point to — eliminate choices that are true in real life but unsupported here.</p>
+      <p class="callout">Wrong answers are often "half-right": correct for part of the sentence, wrong for another. One wrong word kills the whole choice.</p>`,
+    example: { q: "A question asks what the author 'most nearly means' by a word in line 12.",
+      work: "Go back, read the full sentence and the one before it, and define the word from context — not from its most common dictionary meaning." },
+    questions: [
+      { prompt: "On ACT Reading, the correct answer to an inference question must be:", choices: ["The most interesting idea", "Supported by evidence in the passage", "True in the real world", "The longest choice"], answer: 1,
+        why: "Every ACT Reading answer must be grounded in the passage's text." },
+      { prompt: "Roughly how long should you spend per Reading passage?", choices: ["About 5 minutes", "About 8–9 minutes", "About 12 minutes", "About 15 minutes"], answer: 1,
+        why: "35 minutes ÷ 4 passages ≈ 8 min 45 sec each." },
+      { prompt: "A choice is accurate except for one extreme word like 'always.' You should:", choices: ["Keep it — mostly right", "Eliminate it — one wrong part makes it wrong", "Pick it if no better option", "Ignore the word"], answer: 1,
+        why: "If any part of a choice is unsupported, the whole choice is wrong." }
+    ]
+  },
+  {
+    id: 12, section: "Reading", title: "Literary Narrative / Prose Fiction", minutes: 40,
+    objectives: ["Track character relationships and motivation.", "Interpret tone and mood from word choice.", "Distinguish what is stated from what is implied."],
+    lesson: `<p>The Literary Narrative passage tests <strong>character, relationship, and tone</strong> more than plot facts. Pay attention to how characters feel about each other and how the narrator's word choice signals attitude.</p>
+      <p>Questions often ask what a character's action "suggests" or how the narrator "regards" someone. Anchor your answer in specific descriptive language.</p>
+      <p class="callout">Mood comes from connotation. "She forced a smile" implies tension even though "smile" is positive — read the modifier.</p>`,
+    example: { q: "The narrator describes a reunion with 'a stiffness neither would name.' What does this suggest?",
+      work: "Unspoken tension between the two characters — they feel awkwardness but won't acknowledge it aloud." },
+    questions: [
+      { prompt: "A narrator calls a character's generosity 'a performance for the neighbors.' This suggests the narrator views the generosity as:", choices: ["Genuine and kind", "Insincere or for show", "Excessive but well-meant", "Confusing"], answer: 1,
+        why: "Calling it 'a performance' implies it is staged/insincere rather than heartfelt." },
+      { prompt: "To determine a passage's tone, focus most on:", choices: ["The plot events", "The author's word choice and connotation", "The number of characters", "The setting's time period"], answer: 1,
+        why: "Tone is conveyed primarily through diction — the connotations of chosen words." },
+      { prompt: "A question asks what is 'implied' rather than stated. You should:", choices: ["Find an exact quote", "Read between the lines using textual clues", "Use your own opinion", "Pick the most literal choice"], answer: 1,
+        why: "Implication requires reasonable inference from clues in the text, not a direct quote." }
+    ]
+  },
+  {
+    id: 13, section: "Reading", title: "Social Science & Humanities", minutes: 40,
+    objectives: ["Locate the main argument and supporting evidence.", "Follow cause-and-effect reasoning.", "Identify the author's point of view."],
+    lesson: `<p>Social Science and Humanities passages are <strong>argument-driven</strong>. Find the thesis early (often end of paragraph 1 or 2), then note how each paragraph supports it.</p>
+      <p>Watch transition words: <em>however, therefore, in contrast, as a result</em> — they map the logic. Questions reward students who track <em>why</em> the author includes each detail.</p>
+      <p class="callout">Mark the main idea in one phrase before answering. Many wrong answers are real details from the passage that simply don't answer the question asked.</p>`,
+    example: { q: "An author writes 'Yet this assumption collapses under scrutiny.' This signals:",
+      work: "A turn — the author is about to argue against a previously stated assumption." },
+    questions: [
+      { prompt: "The word 'however' at the start of a paragraph most likely signals:", choices: ["A repeated point", "A contrast or shift in the argument", "A conclusion", "An example"], answer: 1,
+        why: "'However' signals contrast — the author is shifting or qualifying the prior idea." },
+      { prompt: "To find a Social Science passage's thesis, look:", choices: ["Only in the last sentence", "Near the end of the first or second paragraph", "In the title only", "In the questions"], answer: 1,
+        why: "Argumentative passages usually state the thesis early, around paragraph 1–2." },
+      { prompt: "A detail is true per the passage but doesn't answer the question. It is:", choices: ["The right answer", "A trap — accurate but irrelevant", "Always wrong grammar", "The main idea"], answer: 1,
+        why: "ACT loves accurate-but-irrelevant traps; the answer must address the specific question." }
+    ]
+  },
+  {
+    id: 14, section: "Reading", title: "Natural Science & Paired Passages", minutes: 40,
+    objectives: ["Read dense science prose for structure, not memorization.", "Compare two viewpoints in paired passages.", "Find where two authors agree or disagree."],
+    lesson: `<p>Natural Science passages look intimidating but follow the same rules: find the structure, don't memorize details, return for specifics.</p>
+      <p>For <strong>paired passages</strong> (Passage A & B), read A and answer A-only questions, then read B and answer B-only questions, then tackle comparison questions last. The key questions ask how the authors <em>relate</em>: agree, disagree, or address different aspects.</p>
+      <p class="callout">For "both authors would agree" questions, the answer must be supported by BOTH passages — eliminate anything only one author states.</p>`,
+    example: { q: "Passage A praises a theory; Passage B notes its limits. A 'both would agree' answer must:",
+      work: "Reflect common ground — e.g., that the theory is worth studying — not the point on which they differ." },
+    questions: [
+      { prompt: "The best order for paired passages is:", choices: ["Read both fully, then all questions", "A + A-questions, B + B-questions, then comparison questions", "Comparison questions first", "Only read Passage B"], answer: 1,
+        why: "Handling each passage's own questions before comparison keeps each author's view distinct." },
+      { prompt: "For a 'both authors agree' question, eliminate any choice that:", choices: ["Is supported by both", "Only one author would support", "Restates the main idea", "Uses science vocabulary"], answer: 1,
+        why: "Agreement requires support from both passages; one-sided claims are out." },
+      { prompt: "Faced with dense scientific terms you don't know, you should:", choices: ["Memorize every term", "Focus on the structure and return for specifics", "Skip the passage", "Guess on all questions"], answer: 1,
+        why: "Understanding structure and locating details on demand beats memorizing jargon." }
+    ]
+  },
+  {
+    id: 15, section: "Science", title: "Data Representation", minutes: 40,
+    objectives: ["Read graphs, tables, and figures quickly.", "Find trends and read values precisely.", "Interpolate and extrapolate from data."],
+    lesson: `<p>ACT Science is a <strong>reading-graphs</strong> test, not a science-knowledge test. Data Representation passages give charts and tables; most questions are 'look it up' or 'find the trend.'</p>
+      <p>Steps: read axis labels and units first, note the direction of each trend (as X increases, Y...), then answer. Many questions need only the figure, not the text.</p>
+      <p class="callout">Always check units and axis scales. A trap answer often uses the right number with the wrong unit, or misreads a non-linear scale.</p>`,
+    example: { q: "A graph shows temperature rising then leveling off. A question asks the value at 60 min, between two plotted points.",
+      work: "Interpolate: estimate the value on the curve between the known points at, say, 50 and 70 minutes." },
+    questions: [
+      { prompt: "Before reading data values, you should first check:", choices: ["The passage title", "The axis labels and units", "The answer choices", "The number of questions"], answer: 1,
+        why: "Axis labels and units tell you what's being measured and prevent unit-trap errors." },
+      { prompt: "Estimating a value BETWEEN two known data points is called:", choices: ["Extrapolation", "Interpolation", "Correlation", "Calibration"], answer: 1,
+        why: "Interpolation = estimating within the range of known data; extrapolation = beyond it." },
+      { prompt: "ACT Science mainly tests your ability to:", choices: ["Recall biology facts", "Interpret data and reasoning in figures", "Do long calculations", "Memorize formulas"], answer: 1,
+        why: "It's a data-interpretation and scientific-reasoning test, not a fact-recall test." }
+    ]
+  },
+  {
+    id: 16, section: "Science", title: "Research Summaries", minutes: 40,
+    objectives: ["Identify the variable being changed and measured.", "Compare results across experiments.", "Understand experimental design and controls."],
+    lesson: `<p>Research Summaries passages describe <strong>experiments</strong>. Identify the independent variable (what's changed), the dependent variable (what's measured), and the control (the baseline for comparison).</p>
+      <p>Questions ask you to compare results across experiments or predict what a new trial would show. Track what stays the same and what differs between experiments.</p>
+      <p class="callout">"What is the purpose of the control group?" The answer is almost always: to provide a baseline/comparison so the effect of the variable can be isolated.</p>`,
+    example: { q: "Experiment 1 varies temperature; Experiment 2 repeats it but adds salt. The salt is:",
+      work: "A new variable introduced to test its additional effect, with Experiment 1 serving as the comparison." },
+    questions: [
+      { prompt: "The variable a scientist deliberately changes is the:", choices: ["Dependent variable", "Independent variable", "Control", "Constant"], answer: 1,
+        why: "The independent variable is the one intentionally manipulated." },
+      { prompt: "The main purpose of a control group is to:", choices: ["Make the experiment longer", "Provide a baseline for comparison", "Increase the sample size", "Add complexity"], answer: 1,
+        why: "Controls isolate the effect of the variable by providing a comparison baseline." },
+      { prompt: "To predict the result of a new trial, you should:", choices: ["Guess randomly", "Extend the trend shown across the existing experiments", "Use outside knowledge only", "Ignore prior data"], answer: 1,
+        why: "Predictions follow the established pattern/trend in the given experimental data." }
+    ]
+  },
+  {
+    id: 17, section: "Science", title: "Conflicting Viewpoints", minutes: 40,
+    objectives: ["Summarize each scientist's hypothesis.", "Pinpoint the core disagreement.", "Match evidence to the viewpoint it supports."],
+    lesson: `<p>The Conflicting Viewpoints passage presents two or more <strong>competing explanations</strong> (e.g., Scientist 1 vs. Scientist 2). It's the most reading-heavy Science passage.</p>
+      <p>For each viewpoint, jot a one-line summary of the claim. Questions ask what each would predict, how they differ, and what new evidence would support or weaken a view.</p>
+      <p class="callout">The disagreement is usually about one specific mechanism or cause — not everything. Pin down exactly where the views split.</p>`,
+    example: { q: "Scientist 1 says heat caused the change; Scientist 2 says pressure did. New data shows change without heat. This:",
+      work: "Weakens Scientist 1 (heat) and supports Scientist 2 (pressure), since change occurred without heat." },
+    questions: [
+      { prompt: "In a Conflicting Viewpoints passage, your first step should be to:", choices: ["Memorize all data", "Summarize each viewpoint's main claim", "Skip to the questions", "Read only the first viewpoint"], answer: 1,
+        why: "A one-line summary of each claim makes comparison questions fast and accurate." },
+      { prompt: "New evidence contradicts Scientist 1's prediction. It most likely:", choices: ["Supports Scientist 1", "Weakens Scientist 1's view", "Has no effect", "Proves both wrong"], answer: 1,
+        why: "Evidence against a viewpoint's prediction weakens that viewpoint." },
+      { prompt: "Two scientists usually disagree about:", choices: ["Every possible detail", "A specific mechanism or cause", "The units of measurement", "The color of the chart"], answer: 1,
+        why: "The conflict typically centers on one specific explanation or cause." }
+    ]
+  },
+  {
+    id: 18, section: "Writing", title: "The Optional Essay", minutes: 45,
+    objectives: ["Understand the prompt's three perspectives.", "Build a clear thesis and structure.", "Use specific examples and address counterarguments."],
+    lesson: `<p>The optional Writing test gives an issue and three perspectives. In 40 minutes you must take a position and <strong>analyze the relationship</strong> between your view and the given perspectives.</p>
+      <p>A strong essay: clear thesis stating your position; 2–3 body paragraphs with <em>specific</em> examples; engagement with at least one opposing perspective; a conclusion that reframes the stakes.</p>
+      <p>Graders reward development and clarity over length, but a thin essay rarely scores well. Plan for 4–5 minutes before writing.</p>
+      <p class="callout">You don't have to choose one of the three given perspectives — you can stake out your own, as long as you engage with theirs.</p>`,
+    example: { q: "The prompt offers three views on automation. A top essay does what with them?",
+      work: "States a clear position, then explicitly analyzes how it agrees/disagrees with the given perspectives, using concrete examples." },
+    questions: [
+      { prompt: "A high-scoring ACT essay must include:", choices: ["Only your opinion, no counterpoints", "A clear thesis and engagement with other perspectives", "As many words as possible", "A summary of the prompt only"], answer: 1,
+        why: "Top essays state a position AND analyze its relationship to the given perspectives." },
+      { prompt: "Before writing, you should spend a few minutes to:", choices: ["Reread the instructions ten times", "Plan a thesis and outline examples", "Count the perspectives", "Pick the longest perspective"], answer: 1,
+        why: "Planning a thesis and examples produces a more coherent, developed essay." },
+      { prompt: "Regarding the three given perspectives, you:", choices: ["Must pick exactly one", "May develop your own as long as you engage theirs", "Must agree with all three", "Should ignore them"], answer: 1,
+        why: "You can take any position, but you must analyze it in relation to the provided perspectives." }
+    ]
+  },
+  {
+    id: 19, section: "Strategy", title: "Test-Day Timing & Guessing", minutes: 35,
+    objectives: ["Build a per-section pacing plan.", "Use a smart guessing letter for time-outs.", "Manage stamina and bubbling accuracy."],
+    lesson: `<p>Pace is the difference between knowing the material and scoring it. Plan checkpoints: in Math, you should be near question 30 at the 30-minute mark.</p>
+      <p>If you must guess to finish, pick a single <strong>'letter of the day'</strong> for every blank — it's statistically as good as random and faster. Bubble in answers in batches to avoid misalignment.</p>
+      <p>Stamina matters: the test runs ~3 hours. Practice full sections so the last passage feels normal, not exhausting.</p>
+      <p class="callout">Two-pass strategy: answer every easy question first, circle hard ones, and return. Never let one hard question eat five minutes.</p>`,
+    example: { q: "You have 5 minutes left in Math and 12 questions to go. Best move?",
+      work: "Quickly solve any you recognize, then bubble your letter-of-the-day for the rest so no question is left blank." },
+    questions: [
+      { prompt: "A 'letter of the day' strategy means:", choices: ["Changing letters each guess", "Using one consistent letter for all forced guesses", "Only guessing on Math", "Never guessing"], answer: 1,
+        why: "Picking one letter for all time-pressured guesses is fast and statistically sound." },
+      { prompt: "The two-pass strategy tells you to:", choices: ["Answer questions strictly in order", "Do easy questions first, then return to hard ones", "Skip the first passage", "Read everything twice"], answer: 1,
+        why: "Banking easy points first prevents hard questions from stealing your time." },
+      { prompt: "To avoid bubbling errors when answering in batches, you should:", choices: ["Bubble after every question only", "Periodically check question number matches bubble number", "Never check", "Erase all answers at the end"], answer: 1,
+        why: "Verifying alignment between question and bubble prevents costly shift errors." }
+    ]
+  },
+  {
+    id: 20, section: "Review", title: "Full Review & Next Steps", minutes: 45,
+    objectives: ["Consolidate the highest-yield rules from each section.", "Diagnose your weakest area from practice.", "Make a focused study plan for the real test."],
+    lesson: `<p>You've covered all four sections plus the essay. The highest-yield reminders:</p>
+      <ul>
+        <li><strong>English</strong>: shortest correct answer usually wins; fix clause boundaries; "OMIT" is often right.</li>
+        <li><strong>Math</strong>: memorize formulas, backsolve with answer choices, write every step.</li>
+        <li><strong>Reading</strong>: answer from the text; one wrong word kills a choice.</li>
+        <li><strong>Science</strong>: read graphs, not jargon; check units; summarize each viewpoint.</li>
+        <li><strong>All</strong>: never leave a blank; manage pace with checkpoints.</li>
+      </ul>
+      <p>Take a timed full-length practice test, score it by section, and target your lowest section with focused drills. Re-do every question you missed until you understand <em>why</em>.</p>
+      <p class="callout">Improvement comes from reviewing mistakes, not just doing more questions. For each miss, write one sentence explaining the correct reasoning.</p>`,
+    example: { q: "Your practice scores: English 28, Math 22, Reading 27, Science 26. Where do you focus?",
+      work: "Math (22) is your lowest and offers the most room to raise your composite — prioritize Math drills while maintaining the others." },
+    questions: [
+      { prompt: "The most effective way to improve from practice tests is to:", choices: ["Only take more tests", "Carefully review and understand every mistake", "Memorize answer letters", "Skip review"], answer: 1,
+        why: "Understanding why you missed each question is what drives score gains." },
+      { prompt: "Given section scores, you should focus study on:", choices: ["Your strongest section", "Your weakest section, for the biggest gain", "Only the essay", "All equally regardless of scores"], answer: 1,
+        why: "Targeting your lowest section yields the largest composite improvement." },
+      { prompt: "On the ACT, a universal rule across all sections is:", choices: ["Leave hard questions blank", "Never leave any answer blank", "Always pick C", "Spend equal time per question"], answer: 1,
+        why: "With no wrong-answer penalty, every blank should at least be a guess." }
+    ]
+  }
+];
+
+</script>
+<script>
+/* ---------- progress (safe storage) ---------- */
+const KEY="act_almanac_progress_v1";
+const store={
+  get(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return window.__mem||{}}},
+  set(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){window.__mem=o}}
+};
+let done=store.get();            // { "3":true, ... }
+let current=1;
+
+/* ---------- student name + participation tracking ---------- */
+const NAME_KEY="act_almanac_student_name";
+function getStudentName(){return localStorage.getItem(NAME_KEY)||"";}
+function ensureStudentName(){
+  let name=getStudentName();
+  if(!name){
+    name=prompt("Welcome! Enter your name so your teacher can see your progress:");
+    if(name&&name.trim())localStorage.setItem(NAME_KEY,name.trim());
+  }
+  return getStudentName();
+}
+function trackCompletion(s){
+  const name=getStudentName();
+  if(!name)return; // don't block the student if they skipped the prompt
+  fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({studentName:name,sessionId:s.id,sessionTitle:s.title,completed:true})
+  }).catch(()=>{/* offline or function not deployed yet — course still works */});
+}
+
+/* ---------- render sidebar ---------- */
+const SECTIONS=["Orientation","English","Math","Reading","Science","Writing","Strategy","Review"];
+function buildNav(){
+  const nav=document.getElementById("nav");nav.innerHTML="";
+  SECTIONS.forEach(sec=>{
+    const items=COURSE.filter(s=>s.section===sec);if(!items.length)return;
+    const h=document.createElement("h4");h.textContent=sec;nav.appendChild(h);
+    items.forEach(s=>{
+      const d=document.createElement("div");d.className="navitem"+(s.id===current?" active":"");
+      d.innerHTML=`<span class="num">${String(s.id).padStart(2,"0")}</span><span class="t">${s.title}</span><span class="dot${done[s.id]?" done":""}"></span>`;
+      d.onclick=()=>{current=s.id;renderAll();window.scrollTo(0,0)};
+      nav.appendChild(d);
+    });
+  });
+  const n=Object.values(done).filter(Boolean).length;
+  document.getElementById("progTxt").textContent=`${n} of ${COURSE.length}`;
+  document.getElementById("progBar").style.width=(n/COURSE.length*100)+"%";
+}
+
+/* ---------- render main ---------- */
+function renderMain(){
+  const s=COURSE.find(x=>x.id===current);
+  const m=document.getElementById("main");
+  m.innerHTML=`
+    <div class="kick">Session ${String(s.id).padStart(2,"0")} · ${s.section}</div>
+    <h1>${s.title}</h1>
+    <div class="meta"><b>Estimated time:</b> ${s.minutes} minutes &nbsp;·&nbsp; <b>Format:</b> lesson, worked example, ${s.questions.length} practice questions</div>
+
+    <div class="objbox"><div class="kick">What you'll be able to do</div>
+      <ul>${s.objectives.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+
+    <h2 class="block">Lesson</h2>
+    <div class="lesson">${s.lesson}</div>
+
+    <h2 class="block">Worked Example</h2>
+    <div class="ex"><div class="q">${s.example.q}</div><div class="w">${s.example.w?s.example.w:s.example.work}</div></div>
+
+    <h2 class="block">Practice</h2>
+    <div class="scorebar">Your score this session: <b id="sc">0 / ${s.questions.length}</b><span id="scnote" style="opacity:.7"></span></div>
+    <div class="quiz" id="quiz"></div>
+
+    <div class="navbtns">
+      <button class="nav" id="prevBtn" ${s.id===1?"disabled":""}>← Previous</button>
+      <button class="nav markdone" id="doneBtn">${done[s.id]?"✓ Completed":"Mark session complete"}</button>
+      <button class="nav" id="nextBtn" ${s.id===COURSE.length?"disabled":""}>Next →</button>
+    </div>`;
+  buildQuiz(s);
+  document.getElementById("prevBtn").onclick=()=>{if(current>1){current--;renderAll();window.scrollTo(0,0)}};
+  document.getElementById("nextBtn").onclick=()=>{if(current<COURSE.length){current++;renderAll();window.scrollTo(0,0)}};
+  document.getElementById("doneBtn").onclick=()=>{done[s.id]=!done[s.id];store.set(done);buildNav();
+    document.getElementById("doneBtn").textContent=done[s.id]?"✓ Completed":"Mark session complete";
+    if(done[s.id])trackCompletion(s)};
+}
+
+function buildQuiz(s){
+  const q=document.getElementById("quiz");q.innerHTML="";
+  const state={correct:0,answered:0};
+  s.questions.forEach((item,qi)=>{
+    const card=document.createElement("div");card.className="qcard";
+    card.innerHTML=`<div class="qp"><span class="qn">Q${qi+1}</span>${item.prompt}</div>`;
+    item.choices.forEach((c,ci)=>{
+      const ch=document.createElement("div");ch.className="choice";
+      ch.innerHTML=`<span class="ltr">${"ABCD"[ci]}</span><span>${c}</span>`;
+      ch.onclick=()=>{
+        if(card.dataset.locked)return;card.dataset.locked="1";
+        state.answered++;
+        const choices=card.querySelectorAll(".choice");
+        choices.forEach(x=>x.classList.add("locked"));
+        if(ci===item.answer){ch.classList.add("correct");state.correct++}
+        else{ch.classList.add("wrong");choices[item.answer].classList.add("correct")}
+        card.querySelector(".explain").classList.add("show");
+        document.getElementById("sc").textContent=`${state.correct} / ${s.questions.length}`;
+        if(state.answered===s.questions.length){
+          const pct=Math.round(state.correct/s.questions.length*100);
+          document.getElementById("scnote").textContent=pct>=70?" — nicely done!":" — review the lesson and try again.";
+        }
+      };
+      card.appendChild(ch);
+    });
+    const ex=document.createElement("div");ex.className="explain";ex.innerHTML=`<b>Why:</b> ${item.why}`;
+    card.appendChild(ex);
+    q.appendChild(card);
+  });
+}
+
+function renderAll(){buildNav();renderMain();resetTutorContext();}
+
+/* ---------- AI Tutor ----------
+   By default this posts to a Netlify Function at /api/tutor (see netlify/functions/tutor.js).
+   Inside the Claude.ai preview it will instead try the keyless in-product endpoint.
+   If neither is reachable, it explains how to enable the tutor. The course works fully without it. */
+const TUTOR_ENDPOINT="/api/tutor";        // change if you host the function elsewhere
+const tbody=document.getElementById("tbody");
+function addMsg(text,cls){const d=document.createElement("div");d.className="msg "+cls;d.innerHTML=text;tbody.appendChild(d);tbody.scrollTop=tbody.scrollHeight;return d;}
+function resetTutorContext(){
+  tbody.innerHTML="";
+  const s=COURSE.find(x=>x.id===current);
+  addMsg(`Hi! I'm your ACT tutor. We're on <b>Session ${s.id}: ${s.title}</b>. Ask me to explain a concept, generate a new practice question, or check your reasoning.`,"ai");
+  const qr=document.getElementById("quickrow");qr.innerHTML="";
+  ["Explain this lesson simply","Give me a harder question","Why was my answer wrong?"].forEach(t=>{
+    const b=document.createElement("button");b.textContent=t;b.onclick=()=>{document.getElementById("tinput").value=t;sendTutor()};qr.appendChild(b);
+  });
+}
+async function sendTutor(){
+  const input=document.getElementById("tinput");const text=input.value.trim();if(!text)return;
+  input.value="";addMsg(text,"me");
+  const s=COURSE.find(x=>x.id===current);
+  const sys=`You are a patient, encouraging ACT prep tutor for high-school students. The student is on Session ${s.id}: "${s.title}" (${s.section}). Lesson objectives: ${s.objectives.join("; ")}. Keep answers short, concrete, and ACT-focused. If asked for a practice question, give one multiple-choice question with the answer and a one-line explanation.`;
+  const thinking=addMsg("…thinking","ai");
+  try{
+    const data=await callModel(sys,text);
+    thinking.innerHTML=data.replace(/\n/g,"<br>");
+  }catch(err){
+    thinking.className="msg note";
+    thinking.innerHTML="The AI tutor isn't connected yet. The course works fully without it. To turn the tutor on after deploying, add your Anthropic API key to the included Netlify Function (see README). Until then, use the lessons and practice questions above.";
+  }
+}
+async function callModel(system,user){
+  // Try the configured backend function first
+  const body={model:"claude-sonnet-4-20250514",max_tokens:1000,system:system,messages:[{role:"user",content:user}]};
+  // Attempt 1: your Netlify function
+  try{
+    const r=await fetch(TUTOR_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    if(r.ok){const j=await r.json();return extract(j);}
+  }catch(e){/* fall through */}
+  // Attempt 2: keyless in-product endpoint (works only inside Claude.ai preview)
+  const r2=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(!r2.ok)throw new Error("no endpoint");
+  return extract(await r2.json());
+}
+function extract(j){
+  if(j&&j.content&&Array.isArray(j.content)){
+    return j.content.filter(b=>b.type==="text").map(b=>b.text).join("\n").trim()||"(no response)";
+  }
+  if(typeof j.reply==="string")return j.reply;
+  return "(no response)";
+}
+document.getElementById("tutorToggle").onclick=()=>document.getElementById("tutor").classList.toggle("open");
+document.getElementById("tutorClose").onclick=()=>document.getElementById("tutor").classList.remove("open");
+document.getElementById("tsend").onclick=sendTutor;
+document.getElementById("tinput").addEventListener("keydown",e=>{if(e.key==="Enter")sendTutor()});
+
+/* ---------- go ---------- */
+ensureStudentName();
+renderAll();
+</script>
+</body>
+</html>
